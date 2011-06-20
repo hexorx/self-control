@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "self-control"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Self-Control builds on you existing state machine to create full work flows.}
+    gem.description = %Q{State machines are awesome but sometimes you need a little more. Like who should do what in order for it to move on? How many steps are left? How can I restfully trigger the next event? Self Control adds route helpers, controller actions and a dsl to turn your existing state machines into full workflows. It is designed to use rails 3 with ActiveModel and should work with any state machine with just a few extra methods.}
     gem.email = "hexorx@gmail.com"
     gem.homepage = "http://github.com/hexorx/self-control"
     gem.authors = ["hexorx"]
