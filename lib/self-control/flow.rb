@@ -24,7 +24,7 @@ module SelfControl
       steps.select { |step| step.allow?(actor) }
     end
     
-    def next_steps_for(actor)
+    def next_step_for(actor)
       steps.detect { |step| step.doable? && !step.done? && step.allow?(actor) }
     end
     

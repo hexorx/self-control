@@ -11,7 +11,7 @@ module SelfControl
     end
     
     def done?
-      doable? && condition?(@builder.if || true) &&  !condition?(@builder.unless || false)
+      doable? && !condition?(@builder.if || false) && condition?(@builder.unless || true)
     end
         
     def condition?(attr)
