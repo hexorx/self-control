@@ -33,8 +33,16 @@ module SelfControl
       @builder.actor.to_sym
     end
     
+    def model_id
+      @model.id if @model.respond_to?(:id)
+    end
+    
     def model_name
       ActiveModel::Naming.singular(@model) if defined?(ActiveModel::Naming)
+    end
+
+    def model_collection
+      ActiveModel::Naming.plural(@model) if defined?(ActiveModel::Naming)
     end
     
     def actor

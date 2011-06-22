@@ -1,8 +1,9 @@
 module SelfControl
-  module ControllerAdditions
+  module ControllerExtensions
     extend ActiveSupport::Concern
     
-    module InstanceMethods      
+    module InstanceMethods
+            
       def steps_list
         @selfcontrol_steps = valid_selfcontrol? ? selfcontrol.steps_for(selfcontrol_actor) : []
         respond_with(@selfcontrol_steps)
@@ -75,8 +76,7 @@ module SelfControl
         unless allow_selfcontrol_step?
           raise SelfControl::AccessDenied.new(nil, selfcontrol_actor, params[:step], params[:choose])
         end
-      end
-        
+      end      
     end
   end
 end
