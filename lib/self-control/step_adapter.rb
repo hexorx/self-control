@@ -15,7 +15,7 @@ module SelfControl
     
     def as_json(options={})
       {
-        :id => to_param
+        :id => to_param,
         :name => name,
         :actor => actor_method,
         :actions => actions,
