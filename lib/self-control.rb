@@ -12,7 +12,7 @@ module SelfControl
       @selfcontrol_builder = SelfControl::Builder.new(self, state_column, &block)
     end
     
-    alias :flowcontrol :selfcontrol    
+    alias :flowcontrol :selfcontrol
   end
   
   module InstanceMethods    
@@ -37,6 +37,7 @@ module SelfControl
   autoload :Builder, 'self-control/builder'
   autoload :FlowBuilder, 'self-control/flow_builder'
   autoload :StepBuilder, 'self-control/step_builder'
+  autoload :ActionBuilder, 'self-control/action_builder'
   autoload :Flow, 'self-control/flow'
   autoload :Step, 'self-control/step'
   autoload :Action, 'self-control/action'

@@ -1,6 +1,6 @@
 module SelfControl
   class StepBuilder
-    attr_accessor :actor, :default, :actions, :name, :if, :unless, :meta
+    attr_reader :name, :actor, :actions, :default, :if, :unless, :meta
     
     def initialize(actor, options)
       @actor = actor

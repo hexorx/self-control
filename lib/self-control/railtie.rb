@@ -1,5 +1,5 @@
 require 'self-control/helper'
-require 'self-control/step_adapter'
+require 'self-control/adapter'
 require 'self-control/route_helpers'
 require 'self-control/controller_extensions'
 

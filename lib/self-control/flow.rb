@@ -1,8 +1,7 @@
 module SelfControl
   class Flow
+    delegate :actions, :action_list, :total, :total_doable, :to => :@builder
     attr_reader :builder, :model
-
-    delegate :actions, :total, :total_doable, :to => :@builder
     
     def initialize(builder, model)
       @builder = builder
@@ -10,9 +9,9 @@ module SelfControl
       @step_map = {}
     end
     
-    def [](name)
-      return if name.nil?
-      name = name.to_sym
+    def [](step_name)
+      return if step_name.nil?
+      name = step_name.to_sym
       @step_map[name] ||= steps.detect { |step| step.name == name }
     end
         
@@ -60,10 +59,10 @@ module SelfControl
       step.allow?(actor)
     end
 
-    def do!(*args)
+    def trigger!(*args)
       options = args.extract_options!
       return false unless step = self[args[0]]
-      step.do!(args[1],options)
+      step.trigger!(args[1],options)
     end
   end
 end

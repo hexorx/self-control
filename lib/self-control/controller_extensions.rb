@@ -21,7 +21,7 @@ module SelfControl
       
       def do_step
         authorize_selfcontrol_step!
-        selfcontrol.do!(selfcontrol_step_name,params[:choose],params[:self_control_step])
+        selfcontrol.do!(selfcontrol_step_name, params[:choose], params[:self_control_step])
         respond_with(selfcontrol_resource, :location => selfcontrol_resource_location)
       end
 
@@ -78,7 +78,7 @@ module SelfControl
       def authorize_selfcontrol_step!
         raise SelfControl::NotImplemented.new() unless valid_selfcontrol_step?
         unless allow_selfcontrol_step?
-          raise SelfControl::AccessDenied.new(nil, selfcontrol_actor, params[:step], params[:choose])
+          raise SelfControl::AccessDenied.new(nil, selfcontrol_actor, selfcontrol_step_name, params[:choose])
         end
       end      
     end

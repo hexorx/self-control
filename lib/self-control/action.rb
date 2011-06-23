@@ -1,46 +1,64 @@
 module SelfControl
   class Action
-    attr_accessor :name, :goto, :for, :options
-        
-    def initialize(name, options={})
-      @name = name
-      @goto = options.delete(:goto)
-      @hash = options.delete(:hash)
-      @arguments = options.delete(:the) || options.delete(:for) || options.delete(:with)
-    end
+    delegate :name, :label, :trigger, :goto, :hash, :arguments, :meta, :to => :@builder
+    delegate :model, :in_context, :to => :@step
     
-    def url_from(model, env)      
-      goto = in_context(@goto, model, env)
-      hash = in_context(@hash, model, env)
-      args = in_context(@arguments, model, env)
+    def initialize(builder, step)
+      @builder = builder
+      @step = step      
+    end
+        
+    def start_url(env=self)
+      processed_goto = goto!(env)
+      processed_hash = hash!(env)
+      processed_args = args!(env)
       
-      url = if goto.is_a?(String) then goto
-      elsif goto.is_a?(Symbol)
-        env.send(goto, args)
-      else
-        env.send(:url_for, (goto || args))
+      url = case processed_goto
+      when String then processed_goto
+      when Symbol then env.send(processed_goto, processed_args)
+      else env.send(:url_for, (processed_goto || processed_args))
       end
       
-      hash ? "#{url}##{hash}" : url
+      "#{url}#{processed_hash}"
     end
     
-    def in_context(option, model, env)
-      case option
-      when String then option
-      when Symbol
-        if model.respond_to?(option) then model.send(option)
-        elsif option.to_s.starts_with?('@')
-          env.instance_variable_get(option)
-        else
-          option
-        end
-      when Array
-        option.map { |opt| in_context(opt, model, env) }
-      when Hash
-        Hash[option.map { |k,v| [k.to_sym, in_context(v, model, env)] }]
-      when Proc
-        option.call(*[model,env].take(option.arity >= 0 ? option.arity : 0))
-      end      
+    def label!(env=self)
+      in_context(label, env)
+    end
+    
+    def goto!(env=self)
+      in_context(goto, env)
+    end
+        
+    def trigger!(env=self)
+      return false unless trigger?(env)
+      begin
+        in_context(trigger, env)
+      rescue
+        false
+      end
+    end
+    
+    def hash!(env=self)
+      results = in_context(hash, env)
+      results ? "##{results}" : nil
+    end
+
+    def args!(env=self)
+      in_context(arguments, env)
+    end
+
+    def meta!(env=self)
+      in_context(meta, env)
+    end
+    
+    def trigger?(env=self)
+      return true unless @builder.if || @builder.unless
+      !condition?(@builder.if || false, env) && condition?(@builder.unless || true, env)
+    end
+    
+    def condition?(option, env=self)
+      @step.condition?(option, env)
     end    
   end
 end

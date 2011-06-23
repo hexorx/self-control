@@ -25,6 +25,9 @@ module SelfControl
         :meta => meta
       }
     end
-    
+  end
+  
+  class Action
+    include ActionView::Helpers::UrlHelper
   end
 end

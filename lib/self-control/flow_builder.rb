@@ -1,12 +1,14 @@
 module SelfControl
   class FlowBuilder
-    attr_accessor :state, :steps, :actors, :actions
+    attr_reader :state, :builder, :steps, :actors, :actions, :action_list
     
-    def initialize(state, &flow)
+    def initialize(state, builder, &flow)
       @state = state
-      @steps ||= []
-      @actors ||= []
-      @actions ||= []
+      @builder = builder
+      @steps = []
+      @actors = []
+      @actions = []
+      @action_list = @builder.actions
       
       instance_eval(&flow)
       
