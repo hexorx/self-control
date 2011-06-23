@@ -6,11 +6,16 @@ module SelfControl
     extend ActiveModel::Translation
     
     def persisted?
-      false
+      true
+    end
+    
+    def to_key
+      [model_name, model_id, name]
     end
     
     def as_json(options={})
       {
+        :id => to_param
         :name => name,
         :actor => actor_method,
         :actions => actions,
