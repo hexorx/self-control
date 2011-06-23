@@ -21,7 +21,7 @@ module SelfControl
       
       def do_step
         authorize_selfcontrol_step!
-        selfcontrol.do!(params[:id],params[:choose],params[:self_control_step])
+        selfcontrol.do!(selfcontrol_step_name,params[:choose],params[:self_control_step])
         respond_with(selfcontrol_resource, :location => selfcontrol_resource_location)
       end
 
@@ -51,9 +51,13 @@ module SelfControl
       def selfcontrol
         @selfcontrol ||= valid_selfcontrol? ? selfcontrol_resource.selfcontrol : nil
       end
-
+      
+      def selfcontrol_step_name
+        @selfcontrol_step_name ||= (params[:step_name] || params[:id] || :default).to_sym
+      end
+      
       def selfcontrol_step
-        @selfcontrol_step ||= selfcontrol.nil? ? nil : selfcontrol[params[:id].to_sym]
+        @selfcontrol_step ||= selfcontrol.nil? ? nil : selfcontrol[selfcontrol_step_name]
       end
             
       def valid_selfcontrol?
@@ -68,7 +72,7 @@ module SelfControl
       
       def allow_selfcontrol_step?
         return false unless selfcontrol.is_a?(SelfControl::Flow)
-        selfcontrol.allow? selfcontrol_actor, :to => params[:id]
+        selfcontrol.allow? selfcontrol_actor, :to => selfcontrol_step_name
       end
       
       def authorize_selfcontrol_step!
