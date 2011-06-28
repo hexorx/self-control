@@ -16,10 +16,12 @@ module SelfControl
       url = case processed_goto
       when String then processed_goto
       when Symbol then env.send(processed_goto, processed_args)
-      else env.send(:url_for, (processed_goto || processed_args))
+      else
+        resource = (processed_goto || processed_args)
+        env.send(:url_for, resource) if resource.present?
       end
       
-      "#{url}#{processed_hash}"
+      "#{url}#{processed_hash}" if url
     end
     
     def label!(env=self)
@@ -41,7 +43,7 @@ module SelfControl
     
     def hash!(env=self)
       results = in_context(hash, env)
-      results ? "##{results}" : nil
+      "##{results}" if results
     end
 
     def args!(env=self)

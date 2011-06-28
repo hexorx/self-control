@@ -1,6 +1,6 @@
 module SelfControl
   class Step
-    delegate :name, :default, :doable?, :meta, :to => :@builder
+    delegate :name, :label, :default, :doable?, :meta, :to => :@builder
     delegate :model, :action_list, :to => :@flow
     
     def initialize(builder, flow)
@@ -48,6 +48,10 @@ module SelfControl
     def actor
       return if actor_method.nil?
       @model.respond_to?(actor_method) ? @model.send(actor_method) : nil
+    end
+    
+    def label!(env=self)
+      in_context(label, env)
     end
     
     def trigger!(*args)

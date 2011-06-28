@@ -8,7 +8,7 @@ module SelfControl
       @trigger = options.delete(:trigger) || @name
       @goto = options.delete(:goto)
       @hash = options.delete(:hash)
-      @arguments = options.delete(:the) || options.delete(:for) || {} 
+      @arguments = options.delete(:the) || options.delete(:for) || {}
       @meta = options.delete(:meta) || options.delete(:with) || {}
       
       @if = options.delete(:if)
