@@ -53,6 +53,10 @@ module SelfControl
     def label!(env=self)
       in_context(label, env)
     end
+
+    def meta!(env=self)
+      in_context(meta, env)
+    end
     
     def trigger!(*args)
       options = args.extract_options!
